@@ -1,30 +1,28 @@
-import net.dv8tion.jda.api.entities.Message;
+package main.java.FloUnityMainBot.sonstiges;
+
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class autopublish extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent event) {
 
-        String id = event.getChannel().getId();
-        Message m = event.getMessage();
+        if(event.getChannelType().equals(ChannelType.NEWS)) {
 
-        if (id.equals("ChannelID")) {
-            publish(m);
+            event.getMessage().crosspost().queue();
+
         }
-
-//Falls ein zweiter channel existiert hier unten einfügen.
-        if (id.equals("ChannelID2")) {
-            publish(m);
-        }
-        // Ende zweiter channel
-        
-    }
-
-    public void publish(Message m) {
-
-        m.crosspost().queue();
 
     }
 
+    public void onMessageUpdate(MessageUpdateEvent event) {
+
+        if(event.getChannelType().equals(ChannelType.NEWS)) {
+
+            event.getMessage().crosspost().queue();
+
+        }
+    }
 }
